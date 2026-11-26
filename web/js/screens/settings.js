@@ -1,8 +1,8 @@
 // 設定:成交規則、智慧快轉、音效、保證金…(改了之後新開的局才生效;已經開始的局用開局時的設定)
 import { api } from '../api.js';
-import { toast } from '../ui.js';
+import { confirmBox, toast } from '../ui.js';
 import { esc } from '../util.js';
-import { loadSettings, prod, state } from '../state.js';
+import { invalidate, loadSettings, prod, state } from '../state.js';
 
 export async function settingsScreen(view) {
   const s = await loadSettings();
@@ -33,14 +33,45 @@ export async function settingsScreen(view) {
         <td><input type="number" data-p="${p}" data-k="l1" value="${s.l1[p]}" style="width:70px"></td>
         <td><input type="number" data-p="${p}" data-k="big" value="${s.big_lots[p]}" style="width:70px"></td></tr>`).join('')}</tbody></table>
     </fieldset>
-    <fieldset><legend>快速鍵</legend><table class="t big"><tbody>
+    <fieldset class="d-only"><legend>快速鍵(接鍵盤時)</legend><table class="t big"><tbody>
       ${[['空白鍵', '開始／暫停'], ['B / S', '市價買／賣'], ['F', '平倉'], ['R', '反手'], ['C', '全部撤單'], ['Q / W', '限價買／賣(再點圖選價位)'],
         ['A / Z', '停損買／賣(觸價,再點圖選價位)'], ['Esc', '取消選價'], ['1 / 2 / 3', '1／5／15 分 K'], ['＋ / −', '口數'], ['↑ / ↓', '倍速'], ['拖曳委託線', '改價']]
         .map(([k, v]) => `<tr><td><b>${esc(k)}</b></td><td>${esc(v)}</td></tr>`).join('')}</tbody></table></fieldset>
-    <fieldset><legend>關於</legend><p class="note" style="margin-top:0">台指競技場 ${esc(state.status.version)}。行情:期交所逐筆成交(TKS 下載,唯讀)。
+    <fieldset class="full"><legend>備份戰績(資料只存在這支手機)</legend>
+      <p class="note" style="margin-top:0">參賽者、每一局、交易日誌都存在這支手機的瀏覽器裡,不會上傳。清除瀏覽器資料或換手機前,先匯出備份檔;
+        之後在新手機按「從備份還原」。${state.status.sources && state.status.sources.persistent === false ? '<br><b class="warn">注意:這個瀏覽器不能永久保存(可能是私密瀏覽),關掉就會不見。</b>' : ''}</p>
+      <div class="row wrap"><button class="btn" id="bk">匯出備份檔</button><button class="btn" id="rs">從備份還原</button>
+        <input type="file" id="rsf" accept=".json,application/json" class="hidden"></div>
+    </fieldset>
+    <fieldset><legend>關於</legend><p class="note" style="margin-top:0">台指競技場手機版 ${esc(state.status.version)}。行情:臺灣期貨交易所公開的期貨每筆成交資料。
       K 線圖:TradingView Lightweight Charts™ 4.2.3(Apache License 2.0,Copyright TradingView, Inc.)。</p>
       <p class="note">這是練習與研究工具,不會連任何下單元件,也不會送出真的單。</p></fieldset>
   </div>`;
+  view.querySelector('#bk').onclick = async () => {
+    const data = await api.get('/api/backup');
+    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    const name = `台指競技場備份_${new Date().toISOString().slice(0, 10)}.json`;
+    const file = new File([blob], name, { type: 'application/json' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: name }); return; } catch (e) { if (e.name === 'AbortError') return; }
+    }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  };
+  view.querySelector('#rs').onclick = () => view.querySelector('#rsf').click();
+  view.querySelector('#rsf').onchange = async e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    try {
+      const data = JSON.parse(await f.text());
+      if (!(await confirmBox('從備份還原', '手機裡現在的參賽者與戰績會被備份檔取代,確定嗎?', '還原', 'danger'))) return;
+      await api.post('/api/restore', data);
+      invalidate(); await loadSettings();
+      toast('已還原', 'good');
+      location.hash = '#/';
+    } catch (err) { toast('還原失敗:' + err.message, 'bad'); }
+  };
   view.querySelector('#save').onclick = async () => {
     const v = id => view.querySelector('#' + id);
     const n = id => Math.max(0, Number(v(id).value) || 0);

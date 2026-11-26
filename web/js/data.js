@@ -5,6 +5,7 @@ const ORDER = [];
 export function parseBin(buf) {
   const dv = new DataView(buf);
   const magic = String.fromCharCode(dv.getUint8(0), dv.getUint8(1), dv.getUint8(2), dv.getUint8(3));
+  if (magic === 'ARN2') return parseBin2(buf);
   if (magic !== 'ARN1') throw new Error('行情檔格式不對');
   const n = dv.getUint32(4, true), t0 = dv.getFloat64(8, true);
   return {
@@ -14,10 +15,25 @@ export function parseBin(buf) {
   };
 }
 
+// 手機版行情檔(.arz):gzip 壓縮的 ARN2 = 時間、價格改存「和前一筆的差」,比原本小 10 倍以上
+function parseBin2(buf) {
+  const dv = new DataView(buf);
+  const n = dv.getUint32(4, true), t0 = dv.getFloat64(8, true);
+  const t = new Int32Array(buf.slice(16, 16 + 4 * n)), px = new Int32Array(buf.slice(16 + 4 * n, 16 + 8 * n));
+  for (let i = 1; i < n; i++) { t[i] += t[i - 1]; px[i] += px[i - 1]; }
+  return { n, t0, t, px, q: new Int32Array(buf, 16 + 8 * n, n), f: new Uint8Array(buf, 16 + 12 * n, n) };
+}
+
+async function gunzip(r) {
+  if (typeof DecompressionStream === 'undefined') throw new Error('這個瀏覽器太舊,不能解壓行情檔(請更新 iOS 16.4／Chrome 80 以上)');
+  return new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+}
+
 export function loadBin(file) {
   if (!cache.has(file)) {
-    const p = fetch('/data/sessions/' + file)
-      .then(r => { if (!r.ok) throw new Error('讀不到行情檔 ' + file); return r.arrayBuffer(); })
+    const name = file.replace(/\.bin$/, '.arz');
+    const p = fetch('data/sessions/' + name)
+      .then(r => { if (!r.ok) throw new Error(navigator.onLine === false ? '沒有網路,這一盤還沒下載過' : '讀不到行情檔 ' + name); return gunzip(r); })
       .then(parseBin);
     p.catch(() => cache.delete(file));
     cache.set(file, p);

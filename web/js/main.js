@@ -10,6 +10,7 @@ import { boardScreen } from './screens/board.js';
 import { journalScreen } from './screens/journal.js';
 import { dataScreen } from './screens/data.js';
 import { settingsScreen } from './screens/settings.js';
+import { onChange as onCatalog, refresh as refreshCatalog } from './local/catalog.js';
 
 const routes = [
   [/^#?\/?$/, lobbyScreen, 'lobby'],
@@ -66,10 +67,6 @@ async function pollStatus() {
     const s = await loadStatus();
     $('#job').innerHTML = jobText(s);
     const st = s.job && s.job.state;
-    if (lastState && lastState !== 'ready' && st === 'ready') {
-      toast('行情資料已更新', 'good');
-      window.dispatchEvent(new CustomEvent('arena:data'));
-    }
     lastState = st;
   } catch (e) {
     $('#job').innerHTML = `<span class="dot err"></span><span>${e.message}</span>`;
@@ -87,6 +84,19 @@ async function boot() {
   }
   window.addEventListener('hashchange', render);
   setInterval(pollStatus, 5000);
+  onCatalog(() => {
+    toast('有新的行情了', 'good');
+    pollStatus();
+    if (!document.body.classList.contains('playing')) window.dispatchEvent(new CustomEvent('arena:data'));
+  });
+  window.addEventListener('arena:nodata', e => toast(e.detail || '目前沒有新的行情', e.detail ? 'warn' : 'info'));
+  setInterval(() => refreshCatalog(), 30 * 60 * 1000);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') refreshCatalog(); });
   render();
 }
 boot();
+
+// 離線快取(加到主畫面後沒網路也能開)
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  navigator.serviceWorker.register('sw.js').catch(e => console.warn('service worker 註冊失敗', e));
+}

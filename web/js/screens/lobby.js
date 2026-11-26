@@ -54,14 +54,12 @@ export async function lobbyScreen(view) {
           <div class="kv"><span class="k">期交所逐筆</span><span class="v">${esc(d.first || '—')} ~ ${esc(d.last || '—')}</span></div>
           <div class="kv"><span class="k">盤數</span><span class="v">${fmtInt(d.sessions)} 盤</span></div>
           <div class="kv"><span class="k">快速局(日＋夜)</span><span class="v">${fmtInt(d.quick_pairs)} 局</span></div>
-          <p class="note" style="margin:8px 0 0">${st.sources && st.sources.tks
-            ? 'TKS 每天傍晚下載新的一天,這裡開著時每 30 分鐘自動匯入。'
-            : '想要更多、更新的行情:到「資料與模型」按「下載期交所最新行情」(期交所保留最近 30 個交易日)。'}</p>
+          <p class="note" style="margin:8px 0 0">每個交易日晚上自動加入當天的行情;打開 App 時會檢查。玩到哪一盤才下載那一盤,下載過的沒網路也能玩。</p>
         </div>
         <div class="side-card"><h3>最近戰果</h3><div class="glist">${recent || '<div class="note">還沒有比賽紀錄</div>'}</div></div>
         <div class="side-card"><h3>怎麼玩</h3><ol class="note" style="margin:0;padding-left:18px">
           <li>新增參賽者,寫下他的策略與規則。</li><li>開始比賽:系統抽一段你沒看過的行情重播。</li>
-          <li>用快速鍵下單(B 買、S 賣、F 平倉、空白鍵暫停)。</li><li>結算看評分、教練講評、和猴子比。</li>
+          <li>用下方的買進／賣出按鈕下單;限價、停損按了再點圖選價位。</li><li>結算看評分、教練講評、和猴子比。</li>
           <li>累積筆數後,段位告訴你策略是不是真的有效。</li></ol></div>
       </div>
     </div>`;

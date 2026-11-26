@@ -1,0 +1,6 @@
+pipeline/taifex_zip/
+pipeline/*.db-wal
+pipeline/*.db-shm
+pipeline/logs/
+__pycache__/
+*.part

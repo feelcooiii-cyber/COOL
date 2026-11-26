@@ -9,6 +9,7 @@ import { sfx } from '../sound.js';
 import { confirmBox, toast } from '../ui.js';
 import { $, esc, fmtInt, fmtSigned, hms, median, upDn } from '../util.js';
 import { invalidate, loadOverview, prod, state } from '../state.js';
+const TOUCH = matchMedia('(hover: none)').matches;
 
 const SPEEDS = [1, 2, 5, 10, 30, 60];
 const FMT = { hour: '一小時局', session: '整盤', quick: '快速局' };
@@ -128,6 +129,7 @@ export async function playScreen(view, gidStr) {
           <div class="row"><span class="muted">${esc(P.name)} ${esc(monthTxt)}</span><span class="spacer"></span><span class="ba" id="ba"></span></div>
           <div class="lastpx" id="last">—</div>
           <div class="ba" id="chg"></div>
+          <div class="m-only mstat"><span id="mpos">空手</span><span id="munr"></span><span class="spacer"></span><span>本局 <b id="mpnl">0</b></span></div>
         </div>
         <div class="blk">
           <div class="row" style="margin-bottom:8px"><span class="muted">口數</span>
@@ -170,6 +172,10 @@ export async function playScreen(view, gidStr) {
 
   const chartEl = $('#chart', view);
   const chart = new ArenaChart(chartEl, { blind, offset: off });
+  // 手機版:K 線黏在狀態列下面,要知道狀態列多高
+  const ptopEl = $('.ptop', view);
+  const ptopRO = new ResizeObserver(() => view.querySelector('.play').style.setProperty('--ptop-h', ptopEl.offsetHeight + 'px'));
+  ptopRO.observe(ptopEl);
   const ctxStreams = bins.ctx.filter(Boolean).map(b => buildStream([b]));
   let builder = null, drawnIdx = 0, barCount = 0;
   const startPx = game.priceAt(game.start) ?? game.stream.P[game.firstIdx] ?? null;
@@ -263,6 +269,10 @@ export async function playScreen(view, gidStr) {
     const pnl = e.pnl();
     elv('pnl').textContent = fmtSigned(pnl);
     elv('pnl').className = 'big-pnl ' + upDn(pnl);
+    elv('mpos').innerHTML = elv('pos').innerHTML;
+    elv('munr').innerHTML = e.pos === 0 ? '' : `<span class="${upDn(ur)}">${fmtSigned(urPts, 1)} 點</span>`;
+    elv('mpnl').textContent = fmtSigned(pnl);
+    elv('mpnl').className = upDn(pnl);
     elv('cost').textContent = fmtInt(e.costs);
     elv('eq').textContent = fmtInt(e.equity());
     const need = Math.abs(e.pos) * e.o.im, eq = e.equity();
@@ -382,10 +392,11 @@ export async function playScreen(view, gidStr) {
     if (canTrade()) { toast(canTrade(), 'warn'); return; }
     pick = { a, side };
     const name = a === 'lmt' ? (side > 0 ? '限價買' : '限價賣') : (side > 0 ? '停損買(觸價)' : '停損賣(觸價)');
-    elv('pickHint').textContent = `在圖上點價位下「${name}」(Esc 取消)`;
+    elv('pickHint').textContent = TOUCH ? `點圖上的價位下「${name}」 ✕ 取消` : `在圖上點價位下「${name}」(Esc 取消)`;
     elv('pickHint').classList.remove('hidden');
     chartEl.style.cursor = 'crosshair';
   }
+  elv('pickHint').onclick = () => endPick();
   function endPick() { pick = null; elv('pickHint').classList.add('hidden'); chartEl.style.cursor = ''; }
   chart.onClick(price => {
     if (!pick || price == null) return;
@@ -400,15 +411,16 @@ export async function playScreen(view, gidStr) {
 
   // 拖曳委託線改價
   let drag = null;
-  chartEl.addEventListener('mousedown', e => {
+  chartEl.addEventListener('pointerdown', e => {
     if (pick || e.button !== 0) return;
+    const tol = e.pointerType === 'touch' ? 16 : 6;
     const rect = chartEl.getBoundingClientRect(), y = e.clientY - rect.top;
     let best = null;
     for (const o of game.engine.active) {
       const px = o.type === 'LMT' ? o.price : o.type === 'STP' ? o.trig : null;
       if (px == null) continue;
       const yy = chart.yOfPrice(px);
-      if (yy != null && Math.abs(yy - y) <= 6 && (!best || Math.abs(yy - y) < best.d)) best = { o, d: Math.abs(yy - y), px };
+      if (yy != null && Math.abs(yy - y) <= tol && (!best || Math.abs(yy - y) < best.d)) best = { o, d: Math.abs(yy - y), px };
     }
     if (!best) return;
     e.preventDefault(); e.stopPropagation();
@@ -419,16 +431,18 @@ export async function playScreen(view, gidStr) {
       if (p != null && drag) { drag.price = p; chart.setLine('o' + drag.o.id, p, lineOpt(drag.o)); }
     };
     const up = () => {
-      window.removeEventListener('mousemove', move, true);
-      window.removeEventListener('mouseup', up, true);
+      window.removeEventListener('pointermove', move, true);
+      window.removeEventListener('pointerup', up, true);
+      window.removeEventListener('pointercancel', up, true);
       chart.setInteractive(true);
       const d = drag;
       drag = null;
       if (d && d.price != null && d.price !== d.from) doAct('mod', { id: d.o.id, price: d.price });
       else syncLines();
     };
-    window.addEventListener('mousemove', move, true);
-    window.addEventListener('mouseup', up, true);
+    window.addEventListener('pointermove', move, true);
+    window.addEventListener('pointerup', up, true);
+    window.addEventListener('pointercancel', up, true);
   }, true);
   chartEl.addEventListener('mousemove', e => {
     if (pick || drag) return;
@@ -495,7 +509,7 @@ export async function playScreen(view, gidStr) {
     elv('pp').textContent = on ? '⏸ 暫停' : (started ? '▶ 繼續' : '▶ 開始');
     elv('pp2').innerHTML = (on ? '暫停' : '繼續') + '<kbd>␣</kbd>';
     if (on) overlay(null);
-    else if (started && !ending) overlay(`<h2>暫停中</h2><p>${counted ? '正式比賽暫停時不能下單。' : '練習場暫停時也可以下單。'}</p><button class="btn primary lg" data-go>▶ 繼續(空白鍵)</button>`);
+    else if (started && !ending) overlay(`<h2>暫停中</h2><p>${counted ? '正式比賽暫停時不能下單。' : '練習場暫停時也可以下單。'}</p><button class="btn primary lg" data-go>▶ 繼續<span class="kbd-hint">(空白鍵)</span></button>`);
     refreshPanel(true);
   }
   function togglePlay() {
@@ -533,12 +547,11 @@ export async function playScreen(view, gidStr) {
   const saveTimer = setInterval(() => { if (running) saveDirty = true; save(); }, 5000);
   function saveNow() {
     if (ending || game.finished) return;
-    try {
-      fetch(`/api/game/${gid}/autosave`, { method: 'POST', keepalive: true, headers: { 'X-Arena': '1', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orders: game.log, saved_t: game.now }) });
-    } catch (e) { /* 關閉中 */ }
+    api.post(`/api/game/${gid}/autosave`, { orders: game.log, saved_t: game.now }).catch(() => {});   // 手機:切到背景就存
   }
+  const onHide = () => { if (document.visibilityState === 'hidden') saveNow(); };
   window.addEventListener('beforeunload', saveNow);
+  document.addEventListener('visibilitychange', onHide);
 
   // ── 練習場倒帶 ──
   function rewind(ms) {
@@ -624,7 +637,7 @@ export async function playScreen(view, gidStr) {
     ? `<h2>繼續上一局</h2><p>上次玩到 ${hms(game.now)},部位與委託都已還原。</p>`
     : `<h2>${esc(title)}</h2><p>${esc(where)}${quick ? '<br>5 分鐘走完一整個日盤和夜盤,約 ' + Math.round(speed) + ' 倍速。' : ''}
        ${spec.at_open ? '<br>開盤前可以先下單,參加開盤集合競價。' : ''}${rl.length ? '<br>規則:' + esc(rl.join('、')) : ''}</p>`;
-  overlay(`${intro}<button class="btn primary lg" data-go>▶ ${resumed ? '繼續' : '開始'}(空白鍵)</button>`);
+  overlay(`${intro}<button class="btn primary lg" data-go>▶ ${resumed ? '繼續' : '開始'}<span class="kbd-hint">(空白鍵)</span></button>`);
   if (resumed) {
     started = true;
     elv('pp').textContent = '▶ 繼續';
@@ -640,6 +653,8 @@ export async function playScreen(view, gidStr) {
       clearInterval(saveTimer);
       window.removeEventListener('keydown', onKey);
       window.removeEventListener('beforeunload', saveNow);
+      document.removeEventListener('visibilitychange', onHide);
+      ptopRO.disconnect();
       document.removeEventListener('visibilitychange', onVis);
       if (!ending && !game.finished) { saveDirty = true; await save(true); }
       chart.remove();

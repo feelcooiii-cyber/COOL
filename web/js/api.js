@@ -1,19 +1,10 @@
-// 和本機伺服器溝通(每個請求都帶 X-Arena 標頭,別的網站送不進來)
+// 手機版:API 不再連本機伺服器,改由瀏覽器裡的 local/api.js 處理(資料存在這台手機)
+import { handle } from './local/api.js';
+
 async function req(method, path, body) {
-  const opt = { method, headers: { 'X-Arena': '1' } };
-  if (body !== undefined) {
-    opt.headers['Content-Type'] = 'application/json';
-    opt.body = JSON.stringify(body);
-  }
-  let r;
-  try {
-    r = await fetch(path, opt);
-  } catch (e) {
-    throw new Error('連不到台指競技場伺服器,請重新開啟程式');
-  }
-  const data = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error(data.error || ('HTTP ' + r.status));
-  return data;
+  const r = await handle(method, path, body);
+  if (!r.ok) throw new Error((r.data && r.data.error) || ('錯誤 ' + r.code));
+  return r.data;
 }
 
 export const api = {
