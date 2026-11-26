@@ -60,7 +60,7 @@ export async function resultScreen(view, gidStr) {
   <div class="section grid cols-2">
     <div><h3 style="margin-bottom:8px">K 線回放</h3><div class="review-chart"><div id="rchart"></div></div>
       <div class="row" style="margin-top:6px"><div class="seg" id="rtf"><button data-tf="1">1 分</button><button data-tf="5" class="on">5 分</button><button data-tf="15">15 分</button></div>
-      <span class="note">紅箭頭買進、綠箭頭賣出</span></div></div>
+      <span class="note">黃箭頭買進、藍箭頭賣出(圓點 = 停損／停利出場)</span></div></div>
     <div><h3 style="margin-bottom:8px">權益變化</h3><div class="card" style="padding:8px"><div class="eq-chart"><div id="eqc"></div></div></div>
       <h3 style="margin:16px 0 8px">教練講評</h3>
       <div class="card"><ul class="coach" style="margin:0;padding-left:18px">${insights.map(x => `<li class="${x.level}">${esc(x.text)}</li>`).join('') || '<li>這一局沒有特別要提醒的。</li>'}</ul></div>
@@ -111,7 +111,7 @@ export async function resultScreen(view, gidStr) {
       const st = game.stream;
       const own = makeBars(st.T, st.P, st.Q, 0, st.n, tf).filter(b => b.time * 1000 - 8 * 3600e3 <= game.end);
       rc.setBars(bars.filter(b => !own.length || b.time < own[0].time).concat(own));
-      rc.setMarkers(fills.map(f => ({ time: barTime(f.t, tf), position: f.side > 0 ? 'belowBar' : 'aboveBar', color: f.side > 0 ? '#ff4d4f' : '#1fbf75', shape: f.side > 0 ? 'arrowUp' : 'arrowDown', text: (f.side > 0 ? '買' : '賣') + f.qty })));
+      rc.setMarkers(fills.map(f => ({ time: barTime(f.t, tf), position: f.side > 0 ? 'belowBar' : 'aboveBar', color: f.side > 0 ? '#ffd43b' : '#4dabf7', shape: f.role === 'sl' || f.role === 'tp' ? 'circle' : f.side > 0 ? 'arrowUp' : 'arrowDown', text: (f.side > 0 ? '買' : '賣') + f.qty })));
       const t0 = barTime(game.start, tf), t1 = barTime(game.end, tf);
       const all = bars.concat(own);
       const i0 = all.findIndex(b => b.time >= t0), i1 = all.findIndex(b => b.time >= t1);

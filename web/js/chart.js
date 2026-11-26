@@ -43,7 +43,7 @@ export class ArenaChart {
   }
   setMarkers(ms) {
     this.markers = [...ms].sort((a, b) => a.time - b.time);
-    if (this.compact) this.markers = this.markers.map(m => ({ ...m, text: '', size: m.shape === 'circle' ? 0.6 : 0.8 }));
+    if (this.compact) this.markers = this.markers.map(m => ({ ...m, text: '', size: m.shape === 'circle' ? 0.35 : 0.5 }));
     this.candles.setMarkers(this.markers);
   }
   // 價格線(委託、均價、停損停利):price 是實際價格,畫面加上平移

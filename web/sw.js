@@ -1,5 +1,5 @@
 // 由 tools/build_sw.py 產生,不要手改
-const VERSION = '5dc560f596';
+const VERSION = '775cc086be';
 const SHELL = 'arena-shell-' + VERSION;
 const DATA = 'arena-data';               // 行情檔(.arz):下載過就一直留著
 const FILES = [".nojekyll", "css/app.css", "img/icon-180.png", "img/icon-192.png", "img/icon-512.png", "img/icon-maskable-512.png", "img/icon.svg", "index.html", "js/api.js", "js/chart.js", "js/data.js", "js/engine.js", "js/game.js", "js/local/api.js", "js/local/catalog.js", "js/local/config.js", "js/local/store.js", "js/main.js", "js/monkey.js", "js/screens/board.js", "js/screens/contestant.js", "js/screens/data.js", "js/screens/journal.js", "js/screens/lobby.js", "js/screens/play.js", "js/screens/result.js", "js/screens/settings.js", "js/screens/start.js", "js/sound.js", "js/state.js", "js/stats.js", "js/ui.js", "js/util.js", "manifest.webmanifest", "vendor/lightweight-charts.js"];

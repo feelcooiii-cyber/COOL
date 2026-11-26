@@ -216,7 +216,7 @@ export async function playScreen(view, gidStr) {
   // ── 標記與價格線 ──
   function refreshMarkers() {
     chart.setMarkers(fills.map(f => ({
-      time: barTime(f.t, tf), position: f.side > 0 ? 'belowBar' : 'aboveBar', color: f.side > 0 ? '#ff4d4f' : '#1fbf75',
+      time: barTime(f.t, tf), position: f.side > 0 ? 'belowBar' : 'aboveBar', color: f.side > 0 ? '#ffd43b' : '#4dabf7',
       shape: f.role === 'sl' || f.role === 'tp' ? 'circle' : f.side > 0 ? 'arrowUp' : 'arrowDown',
       text: (f.role === 'sl' ? '停損' : f.role === 'tp' ? '停利' : f.liq === 'auc' ? '競價' : f.side > 0 ? '買' : '賣') + f.qty,
     })));
