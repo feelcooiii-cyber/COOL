@@ -14,7 +14,7 @@
 
 ## 每天更新行情
 - `tools/update.py`：用電腦版原本的期交所下載＋匯入程式，抓新交易日、轉成 .arz、更新 `web/data/catalog.json`。
-- `.github/workflows/update-data.yml`：放上 GitHub 後，每個交易日台北時間 19:30 自動跑。
+- `.github/workflows/pages.yml`：放上 GitHub 後自動發布網站，每個交易日台北時間 19:30 抓新行情再發布。
 - 手機打開 App（之後每 30 分鐘）會檢查目錄，有新的盤就提示。
 
 ## 還沒做
