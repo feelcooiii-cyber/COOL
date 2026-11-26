@@ -8,6 +8,7 @@ function dstr(sec) { const d = new Date(sec * 1000); return `${d.getUTCMonth() +
 export class ArenaChart {
   constructor(el, { blind = false, offset = 0, height = null } = {}) {
     this.el = el; this.blind = blind; this.off = offset;
+    this.compact = matchMedia('(max-width: 760px)').matches;   // 手機:圖上不寫字(會擋到 K 棒),只留箭頭、顏色和右邊價格標籤
     this.chart = LightweightCharts.createChart(el, {
       autoSize: true,
       height: height || undefined,
@@ -42,11 +43,12 @@ export class ArenaChart {
   }
   setMarkers(ms) {
     this.markers = [...ms].sort((a, b) => a.time - b.time);
+    if (this.compact) this.markers = this.markers.map(m => ({ ...m, text: '', size: m.shape === 'circle' ? 0.6 : 0.8 }));
     this.candles.setMarkers(this.markers);
   }
   // 價格線(委託、均價、停損停利):price 是實際價格,畫面加上平移
   setLine(key, price, { color = '#4f8cff', title = '', style = 2, width = 1 } = {}) {
-    const opt = { price: price + this.off, color, title, lineStyle: style, lineWidth: width, axisLabelVisible: true };
+    const opt = { price: price + this.off, color, title: this.compact ? '' : title, lineStyle: style, lineWidth: width, axisLabelVisible: true };
     const old = this.lines.get(key);
     if (old) old.applyOptions(opt);
     else this.lines.set(key, this.candles.createPriceLine(opt));

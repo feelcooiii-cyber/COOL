@@ -118,6 +118,7 @@ export async function playScreen(view, gidStr) {
         <div class="chart-tools">
           <div class="seg" id="tfs"><button data-tf="1">1 分</button><button data-tf="5">5 分</button><button data-tf="15">15 分</button></div>
           <button class="btn sm ghost" id="recent">回到最新</button>
+          <span class="m-only line-legend" id="lineLegend"></span>
           <span class="spacer"></span>
           <span>拖曳委託線可以改價 · 快速鍵:B 買 S 賣 F 平倉 R 反手 C 全撤 Q/W 限價 A/Z 停損 空白鍵 暫停</span>
         </div>
@@ -216,7 +217,7 @@ export async function playScreen(view, gidStr) {
   function refreshMarkers() {
     chart.setMarkers(fills.map(f => ({
       time: barTime(f.t, tf), position: f.side > 0 ? 'belowBar' : 'aboveBar', color: f.side > 0 ? '#ff4d4f' : '#1fbf75',
-      shape: f.side > 0 ? 'arrowUp' : 'arrowDown',
+      shape: f.role === 'sl' || f.role === 'tp' ? 'circle' : f.side > 0 ? 'arrowUp' : 'arrowDown',
       text: (f.role === 'sl' ? '停損' : f.role === 'tp' ? '停利' : f.liq === 'auc' ? '競價' : f.side > 0 ? '買' : '賣') + f.qty,
     })));
   }
@@ -241,6 +242,10 @@ export async function playScreen(view, gidStr) {
     const e = game.engine;
     if (e.pos !== 0) want.set('avg', { price: Math.round(e.avg), opt: { color: '#c3cad6', title: `均價 ${e.pos > 0 ? '多' : '空'}${Math.abs(e.pos)}`, style: 0, width: 1 } });
     chart.syncLines(want);
+    // 手機:圖上不寫字,改在圖下方列出每條線是什麼
+    const lg = elv('lineLegend');
+    if (lg) lg.innerHTML = [...want.values()].sort((a, b) => b.price - a.price)
+      .map(v => `<span style="color:${v.opt.color}">━ ${esc(v.opt.title)} ${fmtInt(v.price + off)}</span>`).join('');
   }
 
   // ── 面板 ──

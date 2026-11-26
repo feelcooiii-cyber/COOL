@@ -388,3 +388,7 @@ body.playing #toast-root { top: 64px; right: 330px; }
   .chart-tools .seg { flex-wrap: nowrap; }
   .chart-tools .seg button { padding: 3px 10px; }
 }
+@media (max-width: 760px) {
+  .m-only.line-legend { display: flex; flex: 1; min-width: 0; gap: 8px; overflow-x: auto; white-space: nowrap; font-size: 11px; justify-content: flex-end; scrollbar-width: none; }
+  .chart-tools #recent { padding: 3px 6px; }
+}
