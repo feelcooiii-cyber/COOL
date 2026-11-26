@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cooi 小工作室｜新品搶先看</title>
+<meta name="description" content="瞇瞇 MIMI 公仔與 SLOPE DOCK 斜面筆電擴充座，還在設計中。喜歡的話留下意見，達到數量就開始生產。">
+<meta property="og:title" content="Cooi 小工作室｜新品搶先看">
+<meta property="og:description" content="瞇瞇 MIMI 公仔與 SLOPE DOCK 斜面筆電擴充座，填表告訴我們你想不想要。">
+<meta property="og:image" content="img/mimi_colors.jpg">
+<meta name="theme-color" content="#f6efe6">
+<script type="module" src="vendor/model-viewer.min.js"></script>
+<style>
+:root{
+  --bg:#f6efe6; --paper:#fffaf3; --ink:#3a2e26; --sub:#7b6b5f; --line:#e6d9c8;
+  --accent:#d9774a; --accent-ink:#fff; --dark:#1d1e22; --dark2:#2a2b31; --dark-ink:#eceae6; --dark-sub:#a3a1a8; --copper:#c8794a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;line-height:1.65;-webkit-text-size-adjust:100%}
+img{max-width:100%;display:block}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header.top{position:sticky;top:0;z-index:20;background:rgba(246,239,230,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:12px}
+.brand{font-weight:700;letter-spacing:.04em;white-space:nowrap}
+nav a{text-decoration:none;color:var(--sub);margin-left:14px;font-size:15px;white-space:nowrap}
+nav a.cta{color:var(--accent-ink);background:var(--accent);padding:6px 14px;border-radius:999px}
+.hero{padding:56px 0 32px;text-align:center}
+.hero h1{font-size:clamp(28px,5.4vw,46px);line-height:1.25;margin:0 0 12px}
+.hero p{color:var(--sub);font-size:17px;margin:0 auto;max-width:560px}
+.pill{display:inline-block;font-size:13px;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:2px 12px;margin-bottom:16px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
+.card{display:block;text-decoration:none;border-radius:18px;overflow:hidden;background:var(--paper);border:1px solid var(--line)}
+.card img{aspect-ratio:16/9;object-fit:cover;width:100%}
+.card img.fit{object-fit:contain;background:#efebe7}
+.card div{padding:12px 16px 16px;text-align:left}
+.card b{font-size:18px}
+.card span{display:block;color:var(--sub);font-size:14px}
+section.prod{padding:64px 0}
+.eyebrow{font-size:13px;letter-spacing:.12em;color:var(--accent);font-weight:700}
+h2{font-size:clamp(26px,4.4vw,38px);margin:4px 0 8px;line-height:1.25}
+.lead{color:var(--sub);font-size:17px;max-width:640px;margin:0 0 28px}
+.split{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center}
+.viewer{background:radial-gradient(circle at 50% 40%,#fff 0,#f1e4d4 70%);border-radius:22px;aspect-ratio:1/1;position:relative;overflow:hidden}
+.viewer model-viewer{width:100%;height:100%;--poster-color:transparent}
+.viewer .hint{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-size:13px;color:var(--sub);pointer-events:none}
+.viewer img.cut{position:absolute;inset:8% 8% 10%;width:84%;height:82%;object-fit:contain;opacity:0;transition:opacity .25s}
+.viewer.flat img.cut{opacity:1}
+.viewer.flat model-viewer{visibility:hidden}
+.swatches{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 6px}
+.sw{border:2px solid transparent;background:var(--paper);border-radius:999px;padding:6px 14px 6px 8px;display:flex;align-items:center;gap:8px;font:inherit;font-size:15px;color:var(--ink);cursor:pointer}
+.sw i{width:22px;height:22px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.12)}
+.sw[aria-pressed="true"]{border-color:var(--ink)}
+.specs{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:8px}
+.specs li{display:flex;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.specs li b{min-width:76px;color:var(--sub);font-weight:500}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:32px}
+.gallery button{padding:0;border:0;background:none;cursor:zoom-in;border-radius:14px;overflow:hidden}
+.gallery img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .3s}
+.gallery button:hover img{transform:scale(1.03)}
+.gallery .wide{grid-column:span 3}
+.gallery .wide img{aspect-ratio:auto}
+.dock{background:var(--dark);color:var(--dark-ink)}
+.dock .lead,.dock .specs li b{color:var(--dark-sub)}
+.dock .specs li{border-color:#3a3b42}
+.dock .eyebrow{color:var(--copper)}
+.tabs{display:inline-flex;background:var(--dark2);padding:4px;border-radius:999px;margin-bottom:20px}
+.tabs button{border:0;background:none;color:var(--dark-sub);font:inherit;font-size:15px;padding:8px 18px;border-radius:999px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--dark-ink);color:var(--dark)}
+.dock .main-img{border-radius:22px;overflow:hidden;cursor:zoom-in;border:0;padding:0;background:none;width:100%}
+.dock .gallery img{aspect-ratio:auto}
+.dock .gallery{grid-template-columns:repeat(3,1fr)}
+.dock .gallery button{background:#fff}
+.dock .main-img img{width:100%;max-height:640px;object-fit:cover}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}
+.feat div{background:var(--dark2);border-radius:16px;padding:16px}
+.feat b{display:block;font-size:16px;margin-bottom:4px}
+.feat span{font-size:14px;color:var(--dark-sub)}
+section.ask{padding:72px 0 80px;text-align:center}
+.ask .box{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:36px 20px;max-width:720px;margin:0 auto}
+.ask ol{text-align:left;max-width:440px;margin:18px auto 26px;padding-left:22px;color:var(--sub)}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-size:18px;font-weight:700;padding:14px 34px;border-radius:999px;border:0;cursor:pointer}
+.btn.off{background:#cbbcab;cursor:default}
+.small{font-size:13px;color:var(--sub);margin-top:14px}
+footer{padding:28px 0 40px;text-align:center;font-size:13px;color:var(--sub)}
+.lb{position:fixed;inset:0;background:rgba(15,12,10,.92);display:none;align-items:center;justify-content:center;z-index:50;padding:16px;cursor:zoom-out}
+.lb.on{display:flex}
+.lb img{max-height:92vh;max-width:100%;border-radius:8px}
+@media (max-width:760px){
+  nav a:not(.cta){display:none}
+  .cards{grid-template-columns:1fr}
+  .split{grid-template-columns:1fr}
+  .gallery{grid-template-columns:repeat(2,1fr)}
+  .gallery .wide{grid-column:span 2}
+  .dock .gallery{grid-template-columns:1fr 1fr}
+  .feat{grid-template-columns:1fr}
+  section.prod{padding:48px 0}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand">Cooi 小工作室</div>
+  <nav><a href="#mimi">瞇瞇公仔</a><a href="#dock">SLOPE DOCK</a><a class="cta" href="#ask">我想要</a></nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <span class="pill">設計中・還沒開賣</span>
+  <h1>兩個小東西，<br>想先聽聽你的意見</h1>
+  <p>這是我自己畫、自己設計的作品。如果想要的人夠多，就會開始打樣生產。花 1 分鐘告訴我你喜歡哪一款、覺得多少錢合理。</p>
+  <div class="cards">
+    <a class="card" href="#mimi"><img class="fit" src="img/mimi_colors.jpg" alt="瞇瞇 MIMI 四款配色"><div><b>瞇瞇 MIMI 公仔</b><span>手繪角色・4 款配色・高 10 cm</span></div></a>
+    <a class="card" href="#dock"><img src="img/dock_desk_both.jpg" alt="SLOPE DOCK 兩款放在桌上"><div><b>SLOPE DOCK</b><span>斜面筆電擴充座・自帶副螢幕</span></div></a>
+  </div>
+</div></section>
+
+<section class="prod" id="mimi"><div class="wrap">
+  <div class="eyebrow">01 ・ FIGURE</div>
+  <h2>瞇瞇 MIMI</h2>
+  <p class="lead">從手稿長出來的貓。永遠瞇著眼，好像什麼事都不太在意，放在桌上陪你上班剛好。</p>
+  <div class="split">
+    <div>
+      <div class="viewer" id="viewer">
+        <model-viewer id="mv" src="img/mimi.glb" poster="img/mimi_cut_milk.webp" alt="瞇瞇 MIMI 3D 模型" camera-controls auto-rotate auto-rotate-delay="0" rotation-per-second="20deg" shadow-intensity="0.8" exposure="0.95" camera-orbit="30deg 78deg auto" tone-mapping="neutral" interaction-prompt="none" touch-action="pan-y"></model-viewer>
+        <img class="cut" id="cut" alt="">
+        <div class="hint" id="hint">用手指拖曳可以轉 360°</div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:15px;color:var(--sub)">選配色看看</div>
+      <div class="swatches" id="swatches">
+        <button class="sw" data-c="milk" aria-pressed="true"><i style="background:#EAD2B0"></i>奶茶</button>
+        <button class="sw" data-c="orange" aria-pressed="false"><i style="background:#EE8A3C"></i>橘狐</button>
+        <button class="sw" data-c="mint" aria-pressed="false"><i style="background:#A9DDCB"></i>薄荷</button>
+        <button class="sw" data-c="night" aria-pressed="false"><i style="background:#3B3F5C"></i>夜貓</button>
+      </div>
+      <ul class="specs">
+        <li><b>尺寸</b><span>標準版 高 10 cm（寬 8.5、深 4.4 cm）<br>迷你版 高 6 cm</span></li>
+        <li><b>材質</b><span>PVC 搪膠，手感軟、輕，約 60–80 g</span></li>
+        <li><b>塗裝</b><span>眼睛、腮紅移印，耳朵和尾巴尖手工噴色</span></li>
+        <li><b>包裝</b><span>彩盒 11.5 × 7.5 × 13 cm，適合送禮</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="gallery" id="g-mimi">
+    <button><img loading="lazy" src="img/mimi_hero.jpg" alt="奶茶色正面"></button>
+    <button><img loading="lazy" src="img/mimi_face.jpg" alt="臉部特寫"></button>
+    <button><img loading="lazy" src="img/mimi_desk.jpg" alt="放在桌上"></button>
+    <button class="wide"><img loading="lazy" src="img/mimi_angles.jpg" alt="多角度"></button>
+    <button><img loading="lazy" src="img/mimi_box.jpg" alt="包裝盒"></button>
+    <button style="grid-column:span 2"><img loading="lazy" src="img/mimi_spec.jpg" alt="規格尺寸" style="aspect-ratio:auto"></button>
+  </div>
+</div></section>
+
+<section class="prod dock" id="dock"><div class="wrap">
+  <div class="eyebrow">02 ・ DOCK</div>
+  <h2>SLOPE DOCK</h2>
+  <p class="lead">把筆電墊高 12°，打字更順手。前面一條副螢幕顯示時間、CPU、充電瓦數；所有線都插在後面，桌上只剩一台筆電。</p>
+  <div class="tabs" role="tablist" id="tabs">
+    <button role="tab" aria-selected="true" data-v="a">A 工業石墨</button>
+    <button role="tab" aria-selected="false" data-v="b">B 北歐銀胡桃</button>
+  </div>
+  <div class="split">
+    <button class="main-img" id="dock-main"><img id="dock-img" src="img/dock_a_desk.jpg" alt="SLOPE DOCK 桌面情境"></button>
+    <div>
+      <p id="dock-desc" style="margin:0 0 6px;font-size:16px"></p>
+      <ul class="specs">
+        <li><b>尺寸</b><span>寬 32 × 深 23.5 cm，前高 2.4、後高 6.2 cm</span></li>
+        <li><b>適用</b><span>13–16 吋筆電，斜面 12°，前面有止滑擋塊</span></li>
+        <li><b>副螢幕</b><span>前面整條長螢幕，往後仰 30°，坐著好讀</span></li>
+        <li><b>前面接口</b><span>USB-C ×2、USB-A ×2、耳機孔、SD 讀卡</span></li>
+        <li><b>後面接口</b><span>Thunderbolt ×2、HDMI ×2、網路孔、USB-A ×3、電源、防盜鎖孔</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="feat">
+    <div><b>一條線接好</b><span>筆電接一條線，螢幕、網路、充電全部到位。</span></div>
+    <div><b>墊高 12°</b><span>手腕更舒服，螢幕也抬高一點，脖子不用那麼低。</span></div>
+    <div><b>放得下散熱</b><span>內部空間大，長時間外接也不燙手。</span></div>
+  </div>
+  <div class="gallery" id="g-dock"></div>
+</div></section>
+
+<section class="ask" id="ask"><div class="wrap">
+  <div class="box">
+    <div class="eyebrow">告訴我你的想法</div>
+    <h2>想要的話，填 1 分鐘問卷</h2>
+    <ol>
+      <li>你比較想要哪一個（或兩個都要）</li>
+      <li>喜歡的配色或款式</li>
+      <li>覺得多少錢會買</li>
+      <li>想收到開賣通知的話，可以留 Email（選填）</li>
+    </ol>
+    <a class="btn" id="formBtn" href="#" target="_blank" rel="noopener">填寫問卷</a>
+    <div class="small" id="formNote">不用登入，填完就好。Email 只用來通知開賣，不會公開。</div>
+  </div>
+</div></section>
+</main>
+
+<footer>© 2026 Cooi 小工作室・圖片為 3D 設計稿，實際商品以打樣為準</footer>
+
+<div class="lb" id="lb"><img alt=""></div>
+
+<script>
+// ↓↓↓ 把 Google 表單的分享網址貼在引號中間 ↓↓↓
+const FORM_URL = "";
+
+const fb = document.getElementById('formBtn');
+if (FORM_URL) { fb.href = FORM_URL; }
+else { fb.classList.add('off'); fb.textContent = '問卷即將開放'; fb.removeAttribute('href');
+  document.getElementById('formNote').textContent = '問卷準備中，過幾天再回來看看。'; }
+
+// 公仔配色：奶茶看 3D，其他色看照片
+const viewer = document.getElementById('viewer'), cut = document.getElementById('cut'), hint = document.getElementById('hint');
+document.getElementById('swatches').addEventListener('click', e => {
+  const b = e.target.closest('.sw'); if (!b) return;
+  document.querySelectorAll('.sw').forEach(x => x.setAttribute('aria-pressed', x === b));
+  const c = b.dataset.c;
+  if (c === 'milk') { viewer.classList.remove('flat'); hint.textContent = '用手指拖曳可以轉 360°'; }
+  else { cut.src = 'img/mimi_cut_' + c + '.webp'; cut.alt = b.textContent + '配色'; viewer.classList.add('flat'); hint.textContent = '3D 預覽目前只有奶茶色'; }
+});
+
+// Dock 兩款
+const DOCK = {
+  a: '槍灰鈦色金屬，兩側銅色邊框散熱窗，角落螺絲，機械感重。彩盒霧黑配銅色線條。',
+  b: '霧面銀鋁配胡桃木前飾板與前擋，側面一道細溝，乾淨溫潤。彩盒米白牛皮紙。'
+};
+const gd = document.getElementById('g-dock');
+function setDock(v){
+  document.querySelectorAll('#tabs button').forEach(x => x.setAttribute('aria-selected', x.dataset.v === v));
+  document.getElementById('dock-img').src = 'img/dock_' + v + '_desk.jpg';
+  document.getElementById('dock-desc').textContent = DOCK[v];
+  gd.innerHTML = ['views','spec','box'].map(n =>
+    `<button><img loading="lazy" src="img/dock_${v}_${n}.jpg" alt=""></button>`).join('')
+    + '<button style="grid-column:1/-1"><img loading="lazy" src="img/dock_catalog.jpg" alt="兩款型錄"></button>';
+}
+document.getElementById('tabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setDock(b.dataset.v); });
+setDock('a');
+
+// 點圖放大
+const lb = document.getElementById('lb');
+document.addEventListener('click', e => {
+  const b = e.target.closest('.gallery button, .main-img');
+  if (b) { lb.querySelector('img').src = b.querySelector('img').src; lb.classList.add('on'); }
+});
+lb.addEventListener('click', () => lb.classList.remove('on'));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('on'); });
+</script>
+</body>
+</html>
