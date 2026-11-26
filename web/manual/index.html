@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>台指競技場 遊戲說明書</title>
+<link rel="icon" href="../img/icon.svg" type="image/svg+xml">
+<style>
+:root { --text:#1f2430; --muted:#5b6475; --line:#e3e7ee; --bg:#f6f7f9; --card:#fff; --accent:#2f6fed; --accent-bg:#eaf1ff;
+  --up:#d93a3c; --dn:#13985a; --warn:#b26a00; --warn-bg:#fff6e5; --dark:#131722; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15.5px/1.75 "Segoe UI", "Microsoft JhengHei UI", "Microsoft JhengHei", sans-serif; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { display: grid; grid-template-columns: 260px minmax(0, 1fr); max-width: 1320px; margin: 0 auto; }
+nav.toc { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 24px 18px 40px; border-right: 1px solid var(--line); background: #fbfcfd; font-size: 14px; }
+nav.toc .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; margin-bottom: 18px; color: var(--dark); }
+nav.toc ol { list-style: none; margin: 0; padding: 0; }
+nav.toc li { margin: 2px 0; }
+nav.toc li a { display: block; padding: 4px 10px; border-radius: 8px; color: var(--muted); }
+nav.toc li a:hover { background: var(--accent-bg); color: var(--accent); text-decoration: none; }
+nav.toc li.sub a { padding-left: 24px; font-size: 13px; }
+main { padding: 0 48px 80px; min-width: 0; }
+.cover { background: var(--dark); color: #fff; border-radius: 0 0 22px 22px; padding: 46px 48px 40px; margin: 0 -48px 34px; }
+.cover h1 { font-size: 40px; margin: 0 0 6px; letter-spacing: 2px; display: flex; align-items: center; gap: 16px; }
+.cover p { color: #b9c2d3; margin: 6px 0 0; font-size: 16px; }
+.cover .meta { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+.cover .meta span { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); padding: 3px 12px; border-radius: 999px; font-size: 13px; color: #dfe5f0; }
+h2 { font-size: 26px; margin: 54px 0 14px; padding-top: 8px; border-top: 1px solid var(--line); color: var(--dark); }
+h2 .n { color: var(--accent); margin-right: 10px; }
+h3 { font-size: 19px; margin: 30px 0 10px; color: var(--dark); }
+p { margin: 10px 0; }
+ul, ol { padding-left: 24px; }
+li { margin: 4px 0; }
+figure { margin: 18px 0 24px; }
+figure img { width: 100%; border-radius: 12px; border: 1px solid #d5dbe5; box-shadow: 0 6px 22px rgba(20,30,50,.10); display: block; }
+figure.half { max-width: 640px; }
+figcaption { font-size: 13.5px; color: var(--muted); margin-top: 8px; }
+table { border-collapse: collapse; width: 100%; margin: 12px 0 18px; background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid var(--line); font-size: 14.5px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { background: #f0f3f8; color: #3c4456; font-weight: 600; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td.k { white-space: nowrap; font-weight: 600; }
+kbd { display: inline-block; min-width: 26px; text-align: center; padding: 1px 7px; border-radius: 6px; border: 1px solid #c9d0dc; border-bottom-width: 2px; background: #fff; font: 600 13px Consolas, "Microsoft JhengHei UI", monospace; color: #303848; }
+.box { border-radius: 12px; padding: 12px 16px; margin: 14px 0; border: 1px solid var(--line); background: var(--card); }
+.box.tip { border-color: #bcd3ff; background: var(--accent-bg); }
+.box.warn { border-color: #f1d29a; background: var(--warn-bg); }
+.box b:first-child { margin-right: 6px; }
+.steps { counter-reset: s; list-style: none; padding: 0; }
+.steps > li { counter-increment: s; position: relative; padding: 10px 14px 10px 54px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; margin: 10px 0; }
+.steps > li::before { content: counter(s); position: absolute; left: 14px; top: 10px; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.up { color: var(--up); font-weight: 600; } .dn { color: var(--dn); font-weight: 600; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.pill { display: inline-block; padding: 0 10px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+.r-rookie { background: #eef0f4; color: #5b6475; } .r-bronze { background: #f6e9dc; color: #9a5a22; } .r-silver { background: #eef1f5; color: #69768a; }
+.r-gold { background: #fbf1d4; color: #9b7410; } .r-plat { background: #e3f5fa; color: #1f7f99; } .r-diamond { background: #efe8ff; color: #6a43c9; }
+.small { font-size: 13.5px; color: var(--muted); }
+footer { margin-top: 60px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
+.print-toc { display: none; }
+@media (max-width: 980px) { .wrap { grid-template-columns: 1fr; } nav.toc { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); } main { padding: 0 18px 60px; } .cover { margin: 0 -18px 28px; padding: 34px 22px; } .grid2 { grid-template-columns: 1fr; } }
+@media print {
+  @page { size: A4; margin: 14mm 12mm; }
+  body { background: #fff; font-size: 12.5px; }
+  .wrap { display: block; }
+  nav.toc { display: none; }
+  main { padding: 0; }
+  .cover { margin: 0 0 20px; border-radius: 14px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h2 { break-before: page; border-top: 0; margin-top: 0; }
+  h2.nobreak { break-before: auto; }
+  figure, table, .box, .steps > li { break-inside: avoid; }
+  figure img { box-shadow: none; }
+  .steps > li::before, th, .pill, kbd, .box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .print-toc { display: block; columns: 2; column-gap: 28px; font-size: 13.5px; margin: 0 0 10px; padding: 14px 18px; border: 1px solid var(--line); border-radius: 12px; }
+  .print-toc b { column-span: all; display: block; margin-bottom: 6px; }
+  .print-toc div { break-inside: avoid; padding: 2px 0; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc">
+  <div class="brand"><img src="../img/icon.svg" width="26" height="26" alt="">台指競技場</div>
+  <ol>
+    <li><a href="#s1">1. 這是什麼</a></li>
+    <li><a href="#s2">2. 安裝與開啟</a></li>
+    <li><a href="#s3">3. 五分鐘上手</a></li>
+    <li><a href="#s4">4. 參賽者</a></li>
+    <li><a href="#s5">5. 賽制</a></li>
+    <li><a href="#s6">6. 比賽畫面與下單</a></li>
+    <li class="sub"><a href="#s6-keys">快速鍵</a></li>
+    <li><a href="#s7">7. 成交與成本規則</a></li>
+    <li><a href="#s8">8. 結算畫面</a></li>
+    <li><a href="#s9">9. 戰績分析</a></li>
+    <li><a href="#s10">10. 段位與成就</a></li>
+    <li><a href="#s11">11. 排行榜與交易日誌</a></li>
+    <li><a href="#s12">12. 行情資料與更新</a></li>
+    <li><a href="#s13">13. 設定</a></li>
+    <li><a href="#s14">14. 常見問題</a></li>
+    <li><a href="#s15">15. 資料、備份與解除安裝</a></li>
+    <li><a href="#s16">16. 免責聲明與授權</a></li>
+  </ol>
+</nav>
+<main>
+<section class="cover">
+  <h1><img src="../img/icon.svg" width="54" height="54" alt="">台指競技場 遊戲說明書</h1>
+  <p>用臺灣期貨交易所的真實逐筆成交，在歷史行情上比賽；累積戰績之後，用統計看你的策略是本事還是運氣。</p>
+  <div class="meta"><span>版本 1.0.0</span><span>Windows 10／11（64 位元）</span><span>大台・小台・微台</span><span>內建 2026/9/21～11/18 共 74 盤</span></div>
+</section>
+<div class="print-toc"><b>目錄</b>
+  <div>1. 這是什麼</div><div>2. 安裝與開啟</div><div>3. 五分鐘上手</div><div>4. 參賽者</div><div>5. 賽制</div>
+  <div>6. 比賽畫面與下單（含快速鍵）</div><div>7. 成交與成本規則</div><div>8. 結算畫面</div><div>9. 戰績分析</div>
+  <div>10. 段位與成就</div><div>11. 排行榜與交易日誌</div><div>12. 行情資料與更新</div><div>13. 設定</div>
+  <div>14. 常見問題</div><div>15. 資料、備份與解除安裝</div><div>16. 免責聲明與授權</div>
+</div>
+
+<h2 id="s1" class="nobreak"><span class="n">1</span>這是什麼</h2>
+<p>台指競技場是一個「重播歷史行情的交易遊戲」。程式會把期交所記下的每一筆台指期成交照時間重新播放，你在畫面上看 K 線、下單、停損停利，系統用接近真實的規則幫你成交、扣手續費和期交稅，最後替這一局打分數。</p>
+<p>和一般模擬下單不一樣的地方：</p>
+<ul>
+  <li><b>參賽者 = 一種策略。</b>你可以建立好幾位參賽者，例如「突破派」「回檔派」，每位有自己的帳戶、規則和戰績，互不干擾，最後並排比較。</li>
+  <li><b>盲測。</b>正式比賽會隨機抽一段你沒看過的行情，而且不告訴你日期，免得你「記得」那天怎麼走。</li>
+  <li><b>成交不偏袒你。</b>市價單要付買賣價差，一次下多口會吃到較差的價格，限價單要價格「穿過」才算成交（詳見第 7 章）。</li>
+  <li><b>和隨機猴子比。</b>每一局都會讓 200 隻「隨機進場的猴子」在同一段行情、同樣筆數和持有時間下交易，看你贏過幾成。累積夠多筆之後，系統會告訴你這個策略有沒有統計上的優勢。</li>
+  <li><b>遊戲感。</b>段位、成就、排行榜、教練講評、音效、快速鍵。</li>
+</ul>
+<div class="box warn"><b>注意</b>這是練習與研究工具：不連任何券商、不會送出真的單；行情是過去的，不是即時行情；內容不構成任何投資建議。</div>
+
+<h2 id="s2"><span class="n">2</span>安裝與開啟</h2>
+<h3>2-1 系統需求</h3>
+<table>
+  <tr><th>項目</th><th>需求</th></tr>
+  <tr><td class="k">作業系統</td><td>Windows 10 或 Windows 11（64 位元）</td></tr>
+  <tr><td class="k">瀏覽器</td><td>Microsoft Edge（Windows 內建）。遊戲視窗是用 Edge 的「應用程式模式」開的，看起來就是一個獨立程式。</td></tr>
+  <tr><td class="k">硬碟</td><td>約 400 MB（之後每下載一天行情約多 10 MB）</td></tr>
+  <tr><td class="k">網路</td><td>平常不需要。只有按「下載期交所最新行情」時才會連到期交所網站。</td></tr>
+  <tr><td class="k">其他軟體</td><td>不需要。安裝檔裡已經包含程式要用的 Python 執行環境。</td></tr>
+</table>
+<h3>2-2 安裝步驟</h3>
+<ol class="steps">
+  <li>雙擊 <b>台指競技場_安裝程式_v1.0.0.exe</b>。</li>
+  <li>如果出現藍色的「Windows 已保護您的電腦」：按 <b>其他資訊</b> → <b>仍要執行</b>。這是因為安裝檔沒有購買商業的程式碼簽章，Windows 不認得它；程式本身不需要系統管理員權限。</li>
+  <li>安裝畫面：確認安裝位置（預設在你自己的使用者資料夾，不需要管理員權限），勾選要不要建立桌面捷徑和開始功能表捷徑，按 <b>安裝</b>。大約一分鐘內完成。</li>
+  <li>完成畫面：勾選「立即開始遊玩」和「開啟遊戲說明書」，按 <b>完成</b>。</li>
+</ol>
+<div class="grid2">
+  <figure><img src="img/00_setup1.png" alt="安裝畫面"><figcaption>安裝畫面：選安裝位置、要不要建立捷徑</figcaption></figure>
+  <figure><img src="img/00_setup3.png" alt="安裝完成"><figcaption>安裝完成：可以直接開始遊玩、打開說明書</figcaption></figure>
+</div>
+<div class="box tip"><b>更新版本</b>之後拿到新版安裝檔，直接安裝到同一個位置即可：程式和行情會更新，你的參賽者和戰績都會保留。</div>
+<h3>2-3 開啟遊戲</h3>
+<ul>
+  <li>雙擊桌面的 <b>台指競技場</b>（或開始功能表 → 台指競技場）。</li>
+  <li>第一次開啟要準備資料，大約 5～10 秒；之後會更快。</li>
+  <li>遊戲在背景有一個小小的本機伺服器（只接受這台電腦自己連線）。關掉視窗後，它閒置 3 小時會自己結束，不必理它。</li>
+  <li>右上角的小圓點是行情狀態：綠色＝就緒，黃色閃爍＝正在處理資料，紅色＝出錯（請看第 14 章）。</li>
+</ul>
+<h3>2-4 畫面導覽</h3>
+<figure><img src="img/01_lobby.png" alt="大廳"><figcaption>大廳：參賽者卡片（段位、正式交易筆數、期望值、贏過猴子的比例）、右邊是行情資料與最近戰果。上方黃色那一列表示有一局還沒結束，可以「繼續」或「直接結算」。</figcaption></figure>
+<table>
+  <tr><th>頂列</th><th>用途</th></tr>
+  <tr><td class="k">大廳</td><td>所有參賽者、開始比賽、最近戰果、還沒結束的局</td></tr>
+  <tr><td class="k">排行榜</td><td>所有參賽者並排比較（第 11 章）</td></tr>
+  <tr><td class="k">交易日誌</td><td>每一筆交易，可以篩選、看心得（第 11 章）</td></tr>
+  <tr><td class="k">資料與模型</td><td>行情目錄、成交模型說明、下載最新行情（第 12 章）</td></tr>
+  <tr><td class="k">設定</td><td>成交規則、比賽規則、保證金、音效（第 13 章）</td></tr>
+  <tr><td class="k">說明書</td><td>打開這份說明書</td></tr>
+</table>
+
+<h2 id="s3"><span class="n">3</span>五分鐘上手</h2>
+<ol class="steps">
+  <li>大廳按 <b>＋ 新增參賽者</b>：取個名字，類型選「自己操作」，商品先選「小台」，其他用預設值，按 <b>儲存</b>。</li>
+  <li>在參賽者頁按 <b>開始比賽</b>，選 <b>快速局</b>（5 分鐘走完一個日盤加夜盤）。</li>
+  <li>畫面中間出現說明時，按 <kbd>空白鍵</kbd> 開始。</li>
+  <li>覺得會漲按 <kbd>B</kbd>（市價買進），覺得會跌按 <kbd>S</kbd>（市價賣出）。預設會自動幫你掛停損 40 點、停利 80 點，K 線圖上會出現橘色停損線和藍色停利線。</li>
+  <li>想提早出場按 <kbd>F</kbd>（平倉）；想改方向按 <kbd>R</kbd>（反手）。</li>
+  <li>5 分鐘到就自動結算：看評分、和猴子比、教練講評，揭曉這一局是哪一天的行情。</li>
+</ol>
+<div class="box tip"><b>小技巧</b>快速局大約是 228 倍速，一根 1 分 K 只有 0.26 秒，很考驗反應。想慢慢練，請選「一小時局」並用 1～5 倍速。</div>
+
+<h2 id="s4"><span class="n">4</span>參賽者</h2>
+<p>每一位參賽者代表一種策略，帳戶、規則和戰績完全分開。建議一種想法建一位，例如「突破派」只做突破、「回檔派」只做回檔，累積一段時間後在排行榜上比較。</p>
+<figure><img src="img/02_editor.png" alt="新增參賽者"><figcaption>新增參賽者：基本設定、規則、策略卡</figcaption></figure>
+<h3>4-1 兩種參賽者</h3>
+<table>
+  <tr><th>類型</th><th>說明</th></tr>
+  <tr><td class="k">自己操作</td><td>你親自下單。有段位、成就、教練講評。</td></tr>
+  <tr><td class="k">電腦隨機猴子</td><td>完全隨機的對照組：隨機時間、隨機多空進場，持有一段隨機時間就出場。按 <b>下場跑</b> 可以一次跑很多局（20 局約 10 秒）。你的策略至少要穩定贏過它，才算真的有東西。</td></tr>
+</table>
+<h3>4-2 基本設定</h3>
+<table>
+  <tr><th>欄位</th><th>說明</th></tr>
+  <tr><td class="k">名字、顏色</td><td>顯示在大廳與排行榜</td></tr>
+  <tr><td class="k">商品</td><td>大台（每點 200 元）、小台（50 元）、微台（10 元）。三種走勢幾乎一樣，差在每點價值、買賣價差和保證金。</td></tr>
+  <tr><td class="k">起始資金</td><td>預設 100 萬。保證金不夠就不能開新倉（第 7 章）。</td></tr>
+  <tr><td class="k">手續費</td><td>每口每邊多少元，請填你實際的費率；期交稅會另外自動計算。</td></tr>
+</table>
+<h3>4-3 規則（比賽中強制執行）</h3>
+<table>
+  <tr><th>規則</th><th>效果</th></tr>
+  <tr><td class="k">每筆最多幾口</td><td>超過就擋下來</td></tr>
+  <tr><td class="k">單局最多虧多少</td><td>這一局虧到上限（含未實現），自動平倉並鎖住新單，只能等結束</td></tr>
+  <tr><td class="k">每局最多幾筆</td><td>到了就不能再開新倉</td></tr>
+  <tr><td class="k">連虧冷靜</td><td>例如連虧 3 筆冷靜 10 分鐘（市場時間），期間不能開新倉</td></tr>
+  <tr><td class="k">進場一定要帶停損</td><td>勾選後，「進場自動帶停損」不能關，沒停損的進場會被擋下</td></tr>
+  <tr><td class="k">最大回撤上限</td><td>鑽石段位的條件之一（0＝起始資金的 20%）</td></tr>
+</table>
+<p>被規則擋下的次數會記錄下來，並扣單局評分。規則是用來練紀律的：想做到，就讓程式逼你做到。</p>
+<h3>4-4 策略卡與進場理由</h3>
+<ul>
+  <li><b>策略卡</b>：寫下進場條件、出場條件、停損方式、部位大小。比賽時會顯示在畫面右邊提醒你。</li>
+  <li><b>進場理由標籤</b>：例如「突破、回檔、跳空、反轉」。下單前可以先選理由；結算時也能補選。累積之後，戰績頁會告訴你哪一種理由真的有賺。</li>
+</ul>
+<h3>4-5 隨機猴子的設定</h3>
+<p>每局交易幾筆、平均持有幾分鐘（有長有短）、每筆幾口、要不要掛固定點數的停損停利。</p>
+<h3>4-6 編輯、複製、封存</h3>
+<ul>
+  <li>已經比賽過的參賽者，不能改「類型」和「商品」，以免戰績混在一起。想換的話用 <b>複製</b>，會建立一位設定相同的新參賽者。</li>
+  <li><b>封存</b>：大廳和排行榜不再顯示，紀錄仍保留在資料庫。</li>
+</ul>
+
+<h2 id="s5"><span class="n">5</span>賽制</h2>
+<figure><img src="img/03_modes.png" alt="選擇賽制"><figcaption>選擇賽制：正式賽、情境關卡、練習場，每一種都顯示還剩幾局沒看過的行情</figcaption></figure>
+<h3>5-1 正式賽（計入戰績）</h3>
+<table>
+  <tr><th>賽制</th><th>內容</th><th>適合</th></tr>
+  <tr><td class="k">快速局</td><td>5 分鐘走完同一天的日盤（08:45–13:45）和夜盤（15:00–05:00），共 1,140 根 1 分 K，約 228 倍速。日盤收盤到夜盤開盤的休市自動跳過，部位可以留過休市。</td><td>大量練習看盤型、累積樣本</td></tr>
+  <tr><td class="k">一小時局</td><td>隨機抽一小時：日盤分 5 段、夜盤分 14 段。看得到這一段之前的行情。倍速自己調，可以開智慧快轉。</td><td>仔細練進出場</td></tr>
+  <tr><td class="k">整盤</td><td>一整個日盤（5 小時）或夜盤（14 小時）</td><td>練整天的節奏</td></tr>
+</table>
+<h3>5-2 情境關卡（計入戰績，另外分組統計）</h3>
+<table>
+  <tr><th>關卡</th><th>定義（用大台主力月份判定）</th></tr>
+  <tr><td class="k">跳空盤</td><td>日盤開盤和前一盤收盤差 300 點以上</td></tr>
+  <tr><td class="k">大波動盤</td><td>一盤最高最低差 1,000 點以上</td></tr>
+  <tr><td class="k">趨勢盤</td><td>收盤和開盤的差，超過最高最低差的 6 成</td></tr>
+  <tr><td class="k">盤整盤</td><td>收盤和開盤的差，不到最高最低差的 2 成</td></tr>
+  <tr><td class="k">結算日</td><td>月選擇權與期貨結算當天（每月第三個星期三）</td></tr>
+</table>
+<h3>5-3 練習場（不計入戰績）</h3>
+<p>自己挑日期，可以 <b>倒帶 5 分鐘</b>，暫停時也能下單，適合研究特定的一天。<span class="small">注意：練習場挑過的行情就算「看過」，之後不會再出現在正式賽。</span></p>
+<h3>5-4 公平規則</h3>
+<ul>
+  <li><b>只抽沒看過的行情：</b>所有「自己操作」的參賽者其實都是你，所以一段行情只要被任何一位真人參賽者看過，正式賽就不會再抽到。開局的那一刻就算看過，不能重抽。</li>
+  <li><b>盲測：</b>不顯示日期，月份也只顯示「近月」；結算時才揭曉。</li>
+  <li><b>不能倒帶，暫停時不能下單：</b>真實市場不會等你想。暫停可以看圖、喝口水，但要繼續才能下單。</li>
+  <li><b>中途離開：</b>關掉視窗或回大廳，這一局會保留。之後在大廳按「繼續」接著玩，或「直接結算」用存檔的時間點平倉結算。輸的局不能刪。</li>
+</ul>
+<h3>5-5 內建的局數</h3>
+<p>內建 2026/9/21～11/18 共 74 盤，可以玩快速局 36 局、一小時局 703 局、整盤 74 盤。用完之後可以下載期交所最新行情（第 12 章），或到「設定」關掉「只用沒看過的行情」（成績可能受記憶影響）。</p>
+
+<h2 id="s6"><span class="n">6</span>比賽畫面與下單</h2>
+<figure><img src="img/04_play.png" alt="比賽畫面"><figcaption>比賽畫面：K 線上可以看到成交箭頭、停損線（橘）、停利線（藍）、均價線（白）；右邊是下單與部位，下方是成交明細、委託、本局交易。</figcaption></figure>
+<table>
+  <tr><th>區域</th><th>內容</th></tr>
+  <tr><td class="k">頂列</td><td>賽制、參賽者、時鐘、進度條、剩餘時間、倍速、智慧快轉、開始／暫停、結束</td></tr>
+  <tr><td class="k">K 線圖</td><td>1／5／15 分 K 與成交量（紅漲綠跌）。開局前的行情（前一盤）也會畫出來當背景。可以滾輪縮放、拖曳平移，「回到最新」跳回現在。</td></tr>
+  <tr><td class="k">行情</td><td>最新成交價、估計的買價／賣價、這一局開始以來漲跌</td></tr>
+  <tr><td class="k">下單區</td><td>口數、市價買進／賣出、限價、停損、平倉、反手、全撤、進場自動帶停損停利、進場理由</td></tr>
+  <tr><td class="k">部位</td><td>多空與口數、均價、未實現（點／元）、本局損益、成本、權益、保證金使用率</td></tr>
+  <tr><td class="k">規則</td><td>單局虧損、筆數、冷靜時間等目前狀態（快違規時變黃色）</td></tr>
+  <tr><td class="k">成交明細</td><td>最近 40 筆成交；口數多的大單會標成黃色</td></tr>
+  <tr><td class="k">委託／本局交易</td><td>還掛著的單（可以按 ✕ 取消）、這一局已經結束的每一筆</td></tr>
+</table>
+<h3>6-1 時間控制</h3>
+<ul>
+  <li><b>倍速：</b>1×、2×、5×、10×、30×、60×（快速局固定約 228 倍，不能調）。</li>
+  <li><b>智慧快轉：</b>沒有部位、行情又安靜時，自動加速到 30×；價格開始快速變動，或你的委託快被碰到時，自動放慢回你設的倍速。它只看已經發生的行情，不會偷看未來。</li>
+  <li><b>倍速和反應：</b>倍速越快，你的一秒鐘在市場裡就越長。做很短線的話，建議用 1～2 倍速，成績才不會被低估。</li>
+  <li><b>自動暫停：</b>遊戲視窗切到背景時會自動暫停。</li>
+</ul>
+<h3>6-2 下單方式</h3>
+<table>
+  <tr><th>動作</th><th>怎麼做</th><th>說明</th></tr>
+  <tr><td class="k">市價買進／賣出</td><td><kbd>B</kbd>／<kbd>S</kbd> 或大按鈕</td><td>用當下估計的賣價／買價成交</td></tr>
+  <tr><td class="k">限價買／賣</td><td><kbd>Q</kbd>／<kbd>W</kbd>，再點圖上的價位</td><td>掛在你點的價格；價格要「穿過」才成交</td></tr>
+  <tr><td class="k">停損買／賣（觸價）</td><td><kbd>A</kbd>／<kbd>Z</kbd>，再點圖上的價位</td><td>價格碰到觸發價後送出市價單。停損買要掛在現價之上，停損賣掛在現價之下。</td></tr>
+  <tr><td class="k">進場自動帶停損停利</td><td>勾選，填點數</td><td>每次進場（含加碼）自動在均價上下掛停損與停利；其中一張成交，另一張自動取消</td></tr>
+  <tr><td class="k">平倉</td><td><kbd>F</kbd></td><td>取消所有委託，市價平掉全部部位</td></tr>
+  <tr><td class="k">反手</td><td><kbd>R</kbd></td><td>一張市價單平掉原部位並反向開同樣口數</td></tr>
+  <tr><td class="k">全部撤單</td><td><kbd>C</kbd></td><td>取消所有委託（含停損停利）</td></tr>
+  <tr><td class="k">改價</td><td>在圖上拖曳委託線</td><td>放開滑鼠就改價</td></tr>
+  <tr><td class="k">取消一張單</td><td>委託表右邊的 ✕</td><td></td></tr>
+</table>
+<p><b>開盤集合競價：</b>比賽從開盤開始時（快速局、整盤、開盤那一段的一小時局），按「開始」之前就可以先下單，這些單會參加開盤集合競價，用開盤價成交。夜盤開盤前（快速局的休市期間）送出的單也一樣。練跳空盤時很有用。</p>
+<h3 id="s6-keys">6-3 快速鍵</h3>
+<table>
+  <tr><th>按鍵</th><th>功能</th><th>按鍵</th><th>功能</th></tr>
+  <tr><td><kbd>空白鍵</kbd></td><td>開始／暫停</td><td><kbd>Q</kbd> <kbd>W</kbd></td><td>限價買／賣（再點圖選價位）</td></tr>
+  <tr><td><kbd>B</kbd> <kbd>S</kbd></td><td>市價買進／賣出</td><td><kbd>A</kbd> <kbd>Z</kbd></td><td>停損買／賣（再點圖選價位）</td></tr>
+  <tr><td><kbd>F</kbd></td><td>平倉</td><td><kbd>Esc</kbd></td><td>取消選價位</td></tr>
+  <tr><td><kbd>R</kbd></td><td>反手</td><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></td><td>1／5／15 分 K</td></tr>
+  <tr><td><kbd>C</kbd></td><td>全部撤單</td><td><kbd>＋</kbd> <kbd>−</kbd></td><td>口數加減</td></tr>
+  <tr><td><kbd>↑</kbd> <kbd>↓</kbd></td><td>倍速加快／放慢</td><td></td><td></td></tr>
+</table>
+
+<h2 id="s7"><span class="n">7</span>成交與成本規則（怎麼做到「最真實」）</h2>
+<h3>7-1 為什麼市價單不能用最後成交價成交</h3>
+<p>期貨永遠有買價和賣價，兩者的差叫「價差」。你按市價買進，是買在賣價；按市價賣出，是賣在買價。實測台指期平常的價差：大台約 5～6 點、小台約 3～4 點，結算前後還會放大。如果練習程式讓你用最後成交價成交，每來回一趟就會比真實好大約一個價差，練出來的成績會太漂亮。</p>
+<h3>7-2 怎麼估買價與賣價</h3>
+<p>期交所的逐筆資料只有成交價，沒有買賣價，所以程式用「最後一筆往哪邊跳」來估：</p>
+<ul>
+  <li>最後一筆往上跳：代表那筆是買方主動、成交在賣價。所以賣價 ≈ 最後成交價，買價 ≈ 最後成交價 − 典型價差。</li>
+  <li>最後一筆往下跳：反過來。買價 ≈ 最後成交價，賣價 ≈ 最後成交價 ＋ 典型價差。</li>
+</ul>
+<p>典型價差是用群益錄到的真實買賣價校準的（大台日盤 5、夜盤 6；小台日盤 4、夜盤 3；結算前一天和結算日的近月會放大）。拿真實買賣價驗證的結果：</p>
+<table>
+  <tr><th>市價單成交價的算法</th><th>大台平均偏差</th><th>小台平均偏差</th></tr>
+  <tr><td>直接用最後成交價</td><td class="up">每次便宜 2.4～3.4 點（太樂觀）</td><td class="up">便宜 1.4～2.0 點</td></tr>
+  <tr><td>依最後一跳方向 ± 典型價差（採用）</td><td>−0.6～＋0.8 點</td><td>−0.2～＋0.2 點</td></tr>
+</table>
+<p class="small">長期統計幾乎不偏；單筆仍可能差 2～4 點（大台）、1～2 點（小台）。微台沒有買賣價紀錄，先借用小台的價差。</p>
+<h3>7-3 各種委託怎麼成交</h3>
+<table>
+  <tr><th>項目</th><th>規則</th></tr>
+  <tr><td class="k">下單延遲</td><td>從按下到交易所收到，預設 0.2 秒（市場時間）</td></tr>
+  <tr><td class="k">市價單</td><td>買在估計的賣價、賣在估計的買價</td></tr>
+  <tr><td class="k">一次下多口</td><td>最佳一檔通常只有 1～2 口，超過的部分每多一檔差 1 點（可以在設定改）</td></tr>
+  <tr><td class="k">限價單</td><td>價格「穿過」你的價位才算成交，成交在你的限價。因為不知道你排在第幾個，這是保守的算法；結算時會另外算「碰到就成交」的結果給你參考。掛的價格如果已經比市價好，會立刻用市價成交（不會超過你的限價）。</td></tr>
+  <tr><td class="k">停損單（觸價）</td><td>成交價碰到觸發價後，送出市價單（再經過延遲）。行情急的時候，成交價會比觸發價差，這是真的會發生的滑價。</td></tr>
+  <tr><td class="k">集合競價</td><td>開盤前或休市時送出的單、掛著的限價單，能成交的都用開盤那一筆的價格成交</td></tr>
+  <tr><td class="k">時間</td><td>期交所的時間只到秒，同一秒的多筆成交平均分散在那一秒裡</td></tr>
+</table>
+<h3>7-4 成本</h3>
+<p>每口每邊都要付：<b>手續費</b>（參賽者設定）＋ <b>期交稅</b>（成交價 × 每點價值 × 十萬分之二，四捨五入到元）。指數 40,000 點時，期交稅每邊：大台約 160 元、小台約 40 元、微台約 8 元。</p>
+<p>例：小台 48,867 買進、48,829 停損，手續費每邊 20 元：價差損失 38 點 × 50 = 1,900 元，手續費 40 元，期交稅 49＋49 元，合計 −2,038 元。</p>
+<h3>7-5 保證金、追繳與強制平倉</h3>
+<ul>
+  <li>開新倉時，權益要 ≥ 原始保證金 × 口數，否則會被拒絕（預設照期交所公告：大台 701,000、小台 175,250、微台 35,050，可以在設定改）。</li>
+  <li>權益低於維持保證金：畫面提醒「追繳」。</li>
+  <li>權益低於原始保證金的 25%：強制平倉。</li>
+</ul>
+<h3>7-6 換月</h3>
+<p>每一盤用當盤成交量最大的月份（結算週會自動換到下個月）；快速局整局用同一個月份，所以部位可以留過休市。</p>
+<h3>7-7 做不到的地方（誠實說明）</h3>
+<ul>
+  <li>你的單不會影響行情：大量下單時，真實情況會更差。</li>
+  <li>限價單排隊的位置不知道：用「穿過才成交」保守估計。</li>
+  <li>買賣價是估計值：長期不偏，但單筆會有誤差。</li>
+  <li>心理壓力和真錢不同。</li>
+</ul>
+
+<h2 id="s8"><span class="n">8</span>結算畫面</h2>
+<figure><img src="img/05_result.png" alt="結算畫面"><figcaption>結算畫面：評分、損益、揭曉日期、和猴子比、K 線回放、權益變化、教練講評、每一筆檢討與日誌</figcaption></figure>
+<h3>8-1 單局評分只看「過程」</h3>
+<p>單局賺錢可能只是運氣，所以評分（S／A／B／C／D）只看你有沒有照紀律做，不看賺賠。滿分 100：</p>
+<table>
+  <tr><th>扣分項目</th><th>扣分</th></tr>
+  <tr><td>想違反規則（被擋下）</td><td>每次 −8，最多 −40</td></tr>
+  <tr><td>沒有停損的交易（規則沒有強制停損時）</td><td>每筆 −10，最多 −30</td></tr>
+  <tr><td>追價進場（進場前 30 秒內已經往同方向走 30 點以上）</td><td>每筆 −6，最多 −30</td></tr>
+  <tr><td>被強制平倉（虧損上限或保證金不足）</td><td>−15</td></tr>
+  <tr><td>獲利單平均只拿到最大有利的 3 成以下</td><td>−10</td></tr>
+</table>
+<p>90 分以上 S、80 以上 A、65 以上 B、50 以上 C，其他 D；整局沒有交易記為「觀望」。所以會出現「賠錢但 S」（照紀律停損）或「賺錢但 D」（亂追價、沒停損但運氣好）。</p>
+<h3>8-2 和隨機猴子比</h3>
+<p>200 隻猴子在同一段行情裡，做和你一樣多筆、持有時間一樣、口數一樣、多空比例一樣的交易，只是進場時間隨機，成本也照扣。「贏過 61% 的猴子」表示你的這一局比 61% 的猴子好。</p>
+<h3>8-3 限價單「碰到就成交」的對照</h3>
+<p>如果這一局用過限價單，會另外顯示「如果限價單碰到就成交（其他操作不變）」的損益。實際成績和它的差，就是排隊位置不確定造成的範圍。</p>
+<h3>8-4 K 線回放與權益變化</h3>
+<p>整局（含之後的行情）的 K 線和你的每一筆成交，可以切換 1／5／15 分 K；權益曲線顯示這一局中帳戶的起伏。</p>
+<h3>8-5 教練講評</h3>
+<p>自動找出這一局最值得注意的地方，例如「第 2 筆曾經賺 43 點，最後虧 41.8 點：有利的時候沒有保護獲利」、「連虧 3 筆，冷靜 10 分鐘」。</p>
+<h3>8-6 每一筆檢討與日誌</h3>
+<p>每一筆列出進出場時間與價格、點數、損益、<b>最大有利</b>（持有期間最多曾經賺幾點）、<b>最大不利</b>（最多曾經賠幾點）、<b>R 倍數</b>、持有時間、出場方式（停損／停利／手動）與標記（追價、無停損）。右邊可以補選 <b>理由</b>、按 <b>照／沒照</b> 策略、寫 <b>心得</b>，會用在戰績分析。</p>
+
+<h2 id="s9"><span class="n">9</span>戰績分析</h2>
+<p>在大廳點參賽者卡片（或「戰績」）。只算正式賽和情境關卡，練習場不算。</p>
+<figure><img src="img/06_player.png" alt="真人參賽者戰績"><figcaption>真人參賽者的戰績頁：最上面是「這個策略有沒有用」的判斷，接著是各項指標、圖表、教練講評、分組、成就、策略卡與比賽紀錄。樣本不到 30 筆時會提醒你先別下結論。</figcaption></figure>
+<h3>9-1 指標的意思</h3>
+<table>
+  <tr><th>指標</th><th>意思</th></tr>
+  <tr><td class="k">勝率</td><td>賺錢的筆數 ÷ 全部筆數（扣完成本）</td></tr>
+  <tr><td class="k">風報比</td><td>平均每筆賺的 ÷ 平均每筆賠的</td></tr>
+  <tr><td class="k">期望值</td><td>平均每筆賺多少元（以及每口幾點）。<b>最重要的一個數字</b>：大於 0 才是賺錢的策略。</td></tr>
+  <tr><td class="k">獲利因子</td><td>總賺 ÷ 總賠，大於 1 才是賺</td></tr>
+  <tr><td class="k">總損益</td><td>全部加總（扣成本）</td></tr>
+  <tr><td class="k">最大回撤</td><td>依出場順序累積損益，從最高點往下最多掉多少</td></tr>
+  <tr><td class="k">最長連虧</td><td>最多連續賠幾筆</td></tr>
+  <tr><td class="k">平均 R</td><td>把進場時的停損距離當 1R，平均每筆賺賠幾個 R（有停損的交易才算得出來）</td></tr>
+  <tr><td class="k">出場效率</td><td>獲利單實際拿到的點數 ÷ 持有期間最多曾經賺到的點數</td></tr>
+  <tr><td class="k">贏過隨機猴子</td><td>每一局各抽一隻猴子加總、重複 2,000 次，你的總損益贏過幾成</td></tr>
+</table>
+<h3>9-2 這個策略到底有沒有用</h3>
+<ul>
+  <li><b>樣本不到 30 筆：</b>先別下結論，一兩局的輸贏多半是運氣。</li>
+  <li><b>期望值的 95% 區間：</b>用重新抽樣估計「期望值可能落在哪裡」。整個區間都大於 0，而且贏過 95% 的猴子，才顯示「有統計上的優勢」。</li>
+  <li><b>還要幾筆：</b>照目前的平均與波動，估算還要累積多少筆才判斷得出來。</li>
+</ul>
+<figure><img src="img/07_monkey.png" alt="隨機猴子的戰績"><figcaption>以隨機猴子跑完 36 局快速局為例：累積損益曲線、每筆損益分佈、教練講評、各種分組。注意它的期望值是負的——隨機進場扣完成本，長期就是會輸。</figcaption></figure>
+<h3>9-3 分組</h3>
+<p>同樣的指標依多空、日盤／夜盤、賽制、進場時段、持有時間、出場方式、進場理由、有沒有照策略、情境關卡、追價分開看，找出你在哪裡賺、在哪裡賠。<b>灰色＝不到 10 筆</b>，數字很容易是巧合，先別當真。</p>
+<h3>9-4 教練講評（累積）</h3>
+<p>樣本夠時會自動提醒，例如：虧損單抱得比獲利單久（抱虧砍賺）、獲利單出場太早、追價進場的平均成績、沒停損的交易最深曾經倒賠多少、連虧之後的下一筆表現、做多和做空的差別、照策略與沒照策略的差別。每一條都附樣本數。</p>
+
+<h2 id="s10"><span class="n">10</span>段位與成就</h2>
+<h3>10-1 段位：看的是統計上的把握，不是運氣</h3>
+<table>
+  <tr><th>段位</th><th>條件（正式賽＋情境關卡）</th></tr>
+  <tr><td><span class="pill r-rookie">新手</span></td><td>正式交易不到 30 筆</td></tr>
+  <tr><td><span class="pill r-bronze">青銅</span></td><td>30 筆以上</td></tr>
+  <tr><td><span class="pill r-silver">白銀</span></td><td>30 筆以上，期望值（扣成本）大於 0</td></tr>
+  <tr><td><span class="pill r-gold">黃金</span></td><td>50 筆以上，期望值大於 0，贏過 80% 的隨機猴子</td></tr>
+  <tr><td><span class="pill r-plat">白金</span></td><td>100 筆以上，期望值大於 0，贏過 95% 的隨機猴子</td></tr>
+  <tr><td><span class="pill r-diamond">鑽石</span></td><td>200 筆以上，期望值大於 0，贏過 99% 的隨機猴子，而且最大回撤在你設的上限內</td></tr>
+</table>
+<h3>10-2 成就</h3>
+<table>
+  <tr><th>成就</th><th>條件</th><th>成就</th><th>條件</th></tr>
+  <tr><td class="k">初登場</td><td>完成第一局正式比賽</td><td class="k">百筆里程碑</td><td>累積 100 筆正式交易</td></tr>
+  <tr><td class="k">認錯也是本事</td><td>第一次用停損出場</td><td class="k">快手</td><td>完成 10 場快速局</td></tr>
+  <tr><td class="k">紀律十連</td><td>連續 10 筆都有停損</td><td class="k">跳空獵人</td><td>在跳空盤情境關卡獲利</td></tr>
+  <tr><td class="k">紀律三十連</td><td>連續 30 筆都有停損</td><td class="k">贏過猴群</td><td>單局成績贏過 90% 的隨機猴子</td></tr>
+  <tr><td class="k">零違規</td><td>一局有交易，沒有被擋下、沒有追價、每筆都有停損</td><td class="k">穩定輸出</td><td>連續 5 局正式比賽賺錢</td></tr>
+  <tr><td class="k">抱得住</td><td>單筆賺到 2R 以上</td><td class="k">不追價</td><td>一局 5 筆以上交易，都沒有追價</td></tr>
+</table>
+
+<h2 id="s11"><span class="n">11</span>排行榜與交易日誌</h2>
+<figure><img src="img/08_board.png" alt="排行榜"><figcaption>排行榜：所有參賽者並排，點欄位名稱排序；不到 30 筆的排在後面並標灰色</figcaption></figure>
+<figure><img src="img/09_journal.png" alt="交易日誌"><figcaption>交易日誌：所有交易，可以依參賽者、模式、理由篩選，搜尋心得；點一列回到那一局的結算畫面</figcaption></figure>
+
+<h2 id="s12"><span class="n">12</span>行情資料與更新</h2>
+<figure><img src="img/10_data.png" alt="資料與模型"><figcaption>資料與模型：行情目錄（每一盤的成交筆數、高低差、跳空、盤型）、成交模型說明、價差校準，以及「下載期交所最新行情」按鈕</figcaption></figure>
+<ul>
+  <li><b>內建行情：</b>2026/9/21～11/18 共 74 盤（37 個交易日的夜盤＋日盤），大台、小台、微台都有，每一筆成交都在。</li>
+  <li><b>下載最新行情：</b>到「資料與模型」按右上角 <b>下載期交所最新行情</b>，程式會向臺灣期貨交易所網站下載還沒有的交易日，並自動匯入。
+    <ul>
+      <li>期交所只保留<b>最近 30 個交易日</b>，交易日傍晚之後才有當天的檔。</li>
+      <li>一天約 5 MB，每天之間間隔 2 秒；下載完會自動刪掉原始檔，只留整理過的行情。</li>
+      <li>建議每隔幾週下載一次，太久沒下載的日子會超過 30 天就拿不到了。</li>
+    </ul>
+  </li>
+  <li><b>行情目錄：</b>灰色的盤＝已經被看過（正式賽不會再抽到）。</li>
+</ul>
+
+<h2 id="s13"><span class="n">13</span>設定</h2>
+<figure><img src="img/11_settings.png" alt="設定"><figcaption>設定：改了之後，新開的局才生效（已經開始的局用開局時的設定）</figcaption></figure>
+<table>
+  <tr><th>設定</th><th>說明</th></tr>
+  <tr><td class="k">下單延遲</td><td>從下單到交易所收到的時間（市場時間），預設 200 毫秒</td></tr>
+  <tr><td class="k">限價單成交</td><td>價格穿過才成交（保守，建議）／碰到就成交（樂觀）</td></tr>
+  <tr><td class="k">多口滑價</td><td>超過最佳一檔的口數，每多一檔差幾點</td></tr>
+  <tr><td class="k">追價定義</td><td>進場前幾秒內已經往同方向走幾點，就算追價（影響評分與統計）</td></tr>
+  <tr><td class="k">只用沒看過的行情</td><td>建議開著；關掉之後正式賽可能抽到看過的行情</td></tr>
+  <tr><td class="k">隱藏價位</td><td>正式賽把價位整體平移，避免從價位認出是哪一天（損益不受影響）</td></tr>
+  <tr><td class="k">智慧快轉</td><td>新的局是否預設打開、快轉倍速、什麼情況放慢</td></tr>
+  <tr><td class="k">音效</td><td>成交、停損、停利、成就的音效</td></tr>
+  <tr><td class="k">商品</td><td>原始／維持保證金（請照期交所最新公告）、最佳一檔口數、大單門檻</td></tr>
+</table>
+
+<h2 id="s14"><span class="n">14</span>常見問題</h2>
+<h3>安裝時出現「Windows 已保護您的電腦」</h3>
+<p>按 <b>其他資訊</b> → <b>仍要執行</b>。這個安裝檔沒有購買商業的程式碼簽章，所以 Windows SmartScreen 不認得它。如果防毒軟體擋下，可以選擇允許，或請提供程式的人確認安裝檔是原始檔案。</p>
+<h3>雙擊捷徑之後沒有反應，或出現「沒有回應」</h3>
+<p>第一次開啟要準備資料，請等 10 秒左右再試一次。如果一直不行，把 <code>安裝位置\data\logs\server.log</code> 傳給提供程式的人。</p>
+<h3>正式賽說「沒看過的行情用完了」</h3>
+<p>到「資料與模型」下載期交所最新行情；或用練習場；或到設定關掉「只用沒看過的行情」。</p>
+<h3>為什麼我的市價單成交價比最後成交價差？</h3>
+<p>因為真實市場有買賣價差，市價買是買在賣價。這正是這個程式要讓你感受到的成本（第 7 章）。</p>
+<h3>為什麼賠錢的局拿 S，賺錢的局拿 D？</h3>
+<p>單局評分只看過程（第 8 章）。長期的賺賠請看戰績頁和段位。</p>
+<h3>比賽到一半不小心關掉了</h3>
+<p>重新打開，大廳最上面會有「還沒結束」的提示列，按 <b>繼續</b> 接著玩（部位和委託都會還原），或 <b>直接結算</b>。</p>
+<h3>程式會不會連網路、傳資料出去？</h3>
+<p>不會。程式只在這台電腦上運作，只接受本機連線。唯一會連網路的時候，是你按「下載期交所最新行情」，而且只連到臺灣期貨交易所網站下載公開資料。</p>
+<h3>想全部重新開始</h3>
+<p>最簡單的方法是把參賽者封存，再建新的。要完全清空：解除安裝，被問到「要一併刪除你的參賽者、比賽紀錄與設定嗎？」時選「是」，再重新安裝。</p>
+<h3>可以把戰績搬到另一台電腦嗎？</h3>
+<p>先關掉遊戲視窗，把 <code>安裝位置\data</code> 裡的 <code>arena.db</code>（連同同名的 <code>arena.db-wal</code>、<code>arena.db-shm</code>，如果有的話）複製到另一台電腦同樣的位置；或直接用 <code>data\backups</code> 裡每天自動備份的檔案，改名成 <code>arena.db</code>。</p>
+
+<h2 id="s15"><span class="n">15</span>資料、備份與解除安裝</h2>
+<table>
+  <tr><th>位置（預設安裝位置為 <code>%LOCALAPPDATA%\Programs\台指競技場</code>）</th><th>內容</th></tr>
+  <tr><td><code>data\arena.db</code></td><td>你的參賽者、每一局、每一筆交易、成就、設定</td></tr>
+  <tr><td><code>data\backups\</code></td><td>每天第一次開啟時自動備份 arena.db，保留 30 份</td></tr>
+  <tr><td><code>data\sessions\</code></td><td>整理過的行情檔</td></tr>
+  <tr><td><code>data\logs\server.log</code></td><td>程式紀錄（出問題時有用）</td></tr>
+  <tr><td><code>runtime\</code></td><td>程式用的 Python 執行環境（不影響電腦上其他的 Python）</td></tr>
+</table>
+<p><b>解除安裝：</b>開始功能表 → 台指競技場 → 解除安裝台指競技場（或 Windows 設定 → 應用程式 → 台指競技場）。會先問你要不要一併刪除戰績：選「否」會保留 <code>data</code> 資料夾，之後重新安裝到同一個位置可以接著用。</p>
+
+<h2 id="s16"><span class="n">16</span>免責聲明與授權</h2>
+<ul>
+  <li>本程式是交易練習與研究工具，不連接任何期貨商、不會送出真實委託；所有內容僅供學習參考，<b>不構成任何投資建議</b>。過去的行情與模擬成績不代表未來的實際交易結果。</li>
+  <li>行情資料來源：臺灣期貨交易所公開的「期貨每筆成交資料」，經本程式轉換格式，僅供個人練習研究使用。</li>
+  <li>K 線圖使用 TradingView Lightweight Charts™ 4.2.3（Apache License 2.0，Copyright © TradingView, Inc.）。</li>
+  <li>內含 Python 3.12 執行環境（Python Software Foundation License）。授權全文在安裝位置的 <code>licenses</code> 資料夾。</li>
+</ul>
+<footer>台指競技場 1.0.0 · 遊戲說明書</footer>
+</main>
+</div>
+</body>
+</html>
