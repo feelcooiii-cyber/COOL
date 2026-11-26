@@ -70,7 +70,7 @@ h2{font-size:clamp(26px,4.4vw,38px);margin:4px 0 8px;line-height:1.25}
 .tabs button[aria-selected="true"]{background:var(--dark-ink);color:var(--dark)}
 .dock .main-img{border-radius:22px;overflow:hidden;cursor:zoom-in;border:0;padding:0;background:none;width:100%}
 .dock .gallery img{aspect-ratio:auto}
-.dock .gallery{grid-template-columns:repeat(3,1fr)}
+.dock .gallery{grid-template-columns:repeat(2,1fr)}
 .dock .gallery button{background:#fff}
 .dock .main-img img{width:100%;max-height:640px;object-fit:cover}
 .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}
@@ -167,7 +167,7 @@ footer{padding:28px 0 40px;text-align:center;font-size:13px;color:var(--sub)}
     <div>
       <p id="dock-desc" style="margin:0 0 6px;font-size:16px"></p>
       <ul class="specs">
-        <li><b>尺寸</b><span>寬 32 × 深 23.5 cm，前高 2.4、後高 6.2 cm</span></li>
+        <li><b>尺寸</b><span>寬 30 × 深 25 cm，前高 3.8、後高 8.9 cm（依 13–16 吋筆電重心計算，不會往後翻）</span></li>
         <li><b>適用</b><span>13–16 吋筆電，斜面 12°，前面有止滑擋塊</span></li>
         <li><b>副螢幕</b><span>前面整條長螢幕，往後仰 30°，坐著好讀</span></li>
         <li><b>前面接口</b><span>USB-C ×2、USB-A ×2、耳機孔、SD 讀卡</span></li>
@@ -232,7 +232,7 @@ function setDock(v){
   document.querySelectorAll('#tabs button').forEach(x => x.setAttribute('aria-selected', x.dataset.v === v));
   document.getElementById('dock-img').src = 'img/dock_' + v + '_desk.jpg';
   document.getElementById('dock-desc').textContent = DOCK[v];
-  gd.innerHTML = ['views','spec','box'].map(n =>
+  gd.innerHTML = ['views','box'].map(n =>
     `<button><img loading="lazy" src="img/dock_${v}_${n}.jpg" alt=""></button>`).join('')
     + '<button style="grid-column:1/-1"><img loading="lazy" src="img/dock_catalog.jpg" alt="兩款型錄"></button>';
 }
