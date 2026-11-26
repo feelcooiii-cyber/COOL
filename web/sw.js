@@ -17,6 +17,7 @@ self.addEventListener('fetch', e => {
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
   const path = url.pathname;
+  if (path.includes('/shop/')) return;                   // 預購頁不歸 App 管,照一般網頁
   if (path.endsWith('/data/catalog.json')) {             // 目錄:先問網路,沒網路用上次的
     e.respondWith(fetch(req).then(r => { if (r.ok) { const cp = r.clone(); caches.open(DATA).then(c => c.put('data/catalog.json', cp)); } return r; })
       .catch(() => caches.open(DATA).then(c => c.match('data/catalog.json')).then(r => r || Response.error())));
